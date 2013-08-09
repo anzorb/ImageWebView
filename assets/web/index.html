@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<title></title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<style>
+
+	body,html{
+		margin:0;
+		text-align:center;
+		padding:20px;
+	}
+	img {
+		max-width: 100%;
+	}
+	</style>
+	</head>
+	<body>
+		<button id="save">Save Image</button>
+		<img src="#" id="image"/>
+	<script>
+		window.onload = function(){
+			imageEl = document.getElementById("image");
+			buttonEl = document.getElementById("save");
+			
+			navigator.cascades.onmessage = function(message) {
+				imageEl.src = message;
+			}
+			
+			navigator.cascades.postMessage("ready");
+			
+			//disable long hold
+			imageEl.addEventListener("touchstart",function(evt){
+				evt.preventDefault();
+				evt.stopPropagation();
+			});
+			
+			buttonEl.addEventListener("click", function(){			
+				navigator.cascades.postMessage(JSON.stringify({ action: "save", url: imageEl.src }));
+			});
+		}
+	</script>
+	</body>
+</html>
